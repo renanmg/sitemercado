@@ -1,0 +1,29 @@
+<div class="col-md-6">
+  <h2 class="text-center">Login</h2>
+  <form [formGroup]="loginForm" novalidate class="form">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input formControlName="username" placeholder="Username" name="username" class="form-control" id="username"
+        maxlength="100">
+      <div class="text-danger"
+        *ngIf="loginForm.get('username').hasError('required') && loginForm.get('username').touched">
+        Username é obrigatório
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input formControlName="password" placeholder="Password" name="password" class="form-control" id="password">
+      <div class="text-danger"
+        *ngIf="loginForm.get('password').hasError('required') && loginForm.get('password').touched">
+        Password é obrigatório
+      </div>
+    </div>
+    <button class="btn btn-success" [disabled]='loginForm.invalid' (click)="submitForm()">Login</button>
+    <div class="alert alert-danger mt-4" *ngIf="serverErrorMessages">
+      <strong>Erro no servidor:</strong>
+      <ul>
+        <li *ngFor="let error of serverErrorMessages">{{error.message}}</li>
+      </ul>
+    </div>
+  </form>
+</div>

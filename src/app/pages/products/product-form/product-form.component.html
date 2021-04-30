@@ -1,0 +1,69 @@
+<nav class="mb-5">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"> <a routerLink="/">Home</a> </li>
+        <li class="breadcrumb-item"> <a routerLink="/products">Produtos</a> </li>
+        <li class="breadcrumb-item active"> {{pageTitle}} </li>
+    </ol>
+</nav>
+
+<div class="row mb-4">
+    <div class="col-md">
+        <h1 class="h2 border-left pl-2">
+            {{pageTitle}}
+        </h1>
+    </div>
+    <div class="col-md">
+        <a routerLink="/products" class="btn btn-light float-right">
+            << Voltar </a>
+    </div>
+</div>
+
+<form [formGroup]="productForm" (submit)="submitForm()">
+    <div class="card">
+        <div class="card-header">
+            Informações sobre o produto
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" id="nome" formControlName="nome">
+
+                    <div class="text-danger" *ngIf="productForm.get('nome').invalid && productForm.get('nome').touched">
+                        <div *ngIf="productForm.get('nome').errors.required">Nome é obrigatório</div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="valor">Valor</label>
+                    <input type="number" class="form-control" id="valor" formControlName="valor">
+
+                    <div class="text-danger"
+                        *ngIf="productForm.get('valor').invalid && productForm.get('valor').touched">
+                        <div *ngIf="productForm.get('valor').errors.required">Valor é obrigatório</div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="imagem">Imagem</label>
+                    <input type="file" formControlName="imagem" placeholder="Imagem" name="imagem"
+                        class="form-control" id="imagem" (change)="uploadImage($event)">
+                    <div class="text-danger"
+                        *ngIf="productForm.get('imagem').invalid && productForm.get('imagem').touched">
+                        <div *ngIf="productForm.get('imagem').errors.required">Imagem é obrigatória</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-danger mt-4" *ngIf="serverErrorMessages">
+        <strong>Erro no servidor:</strong>
+        <ul>
+            <li *ngFor="let error of serverErrorMessages">{{error.message}}</li>
+        </ul>
+    </div>
+
+    <button [disabled]="submittingForm || productForm.invalid" type="submit"
+        class="btn btn-primary btn-lg float-right mt-3"> Salvar</button>
+</form>
