@@ -36,4 +36,8 @@ export class ProductsListComponent implements OnInit {
         )
   }
 
+  getImagePath = (imagem: string) => {
+    return `https://localhost:5001/Images/${imagem}`;
+  }
+
 }

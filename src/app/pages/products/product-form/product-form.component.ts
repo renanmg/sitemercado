@@ -22,6 +22,7 @@ export class ProductFormComponent implements OnInit, AfterContentChecked {
   submittingForm: boolean = false;
   product: Product = new Product();
   file: any;
+  showImage: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -57,6 +58,10 @@ export class ProductFormComponent implements OnInit, AfterContentChecked {
     this.file = event.target.files[0];
   }
 
+  getImagePath = (imagem: string) => {
+    return `https://localhost:5001/Images/${imagem}`;
+  }
+
   private setCurrentAction() {
     if (this.route.snapshot.url[0].path == "new") {
       this.currentAction = "new";
@@ -70,7 +75,8 @@ export class ProductFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       nome: [null, [Validators.required]],
       valor: [null, [Validators.required]],
-      imagem: [null, [Validators.required]]
+      imagem: [null, []],
+      imagemArquivo: [null, []]
     })
   }
 
@@ -82,9 +88,15 @@ export class ProductFormComponent implements OnInit, AfterContentChecked {
         (product) => {
           this.product = product;
           this.productForm.patchValue(product);
+          this.showImage = true;
+          this.productForm.get('imagemArquivo').setValidators([]);
+          this.productForm.updateValueAndValidity();
         },
         //(error) => alert("Ocorreu um erro no servidor, tente mais tarde")
       )
+    } else {
+      this.productForm.get('imagemArquivo').setValidators([Validators.required]);
+      this.productForm.updateValueAndValidity();
     }
   }
 
@@ -100,9 +112,13 @@ export class ProductFormComponent implements OnInit, AfterContentChecked {
 
   private createProduct() {
     const product: Product = Object.assign(new Product(), this.productForm.value);
-    delete product.id;
 
-    this.productService.create(product)
+    const formData = new FormData();
+    formData.append('Nome', product.nome);
+    formData.append('Valor', product.valor.toString());
+    formData.append('ImagemArquivo', this.file);
+
+    this.productService.create(formData)
       .subscribe(
         res => this.actionsForSuccess(res),
         error => this.actionsForError(error)
@@ -112,7 +128,15 @@ export class ProductFormComponent implements OnInit, AfterContentChecked {
   private updateProduct() {
     const product: Product = Object.assign(new Product(), this.productForm.value);
 
-    this.productService.update(product)
+    const formData = new FormData();
+    formData.append('Id', product.id);
+    formData.append('Nome', product.nome);
+    formData.append('Valor', product.valor.toString());
+
+    if (this.file)
+      formData.append('ImagemArquivo', this.file);
+
+    this.productService.update(formData)
       .subscribe(
         res => this.actionsForSuccess(res),
         error => this.actionsForError(error)

@@ -21,15 +21,17 @@
 <table class="table table-hover">
     <thead>
         <tr class="bg-primary text-light">
-            <th>Produtos</th>
+            <th>Nome</th>
+            <th>Valor</th>
+            <th>Imagem</th>
             <th>Ações</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let product of products">
-            <td>
-                <strong>{{product.nome}}</strong><br>
-            </td>
+            <td> <strong>{{product.nome}}</strong><br> </td>
+            <td> <strong>{{product.valor}}</strong><br> </td>
+            <td><img [src]="getImagePath(product.imagem)" alt="Imagem" style="width: 150px; height: 150px" /></td>
             <td>
                 <a [routerLink]="[product.id, 'edit']" class="btn btn-outline-info btn-sm mr-2">Editar</a>
                 <a (click)="deleteProduct(product)" class="btn btn-outline-danger btn-sm">Excluir</a>

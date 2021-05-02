@@ -44,13 +44,17 @@
                     </div>
                 </div>
 
+                <div *ngIf="showImage">
+                    <img [src]="getImagePath(productForm.get('imagem').value)" alt="Imagem" style="width: 150px; height: 150px" />
+                </div>
+
                 <div class="form-group col-md-4">
-                    <label for="imagem">Imagem</label>
-                    <input type="file" formControlName="imagem" placeholder="Imagem" name="imagem"
-                        class="form-control" id="imagem" (change)="uploadImage($event)">
+                    <label for="imagemArquivo">Imagem</label>
+                    <input type="file" formControlName="imagemArquivo" placeholder="Imagem" name="imagemArquivo"
+                        class="form-control" id="imagemArquivo" (change)="uploadImage($event)">
                     <div class="text-danger"
-                        *ngIf="productForm.get('imagem').invalid && productForm.get('imagem').touched">
-                        <div *ngIf="productForm.get('imagem').errors.required">Imagem é obrigatória</div>
+                        *ngIf="productForm.get('imagemArquivo').invalid && productForm.get('imagemArquivo').touched">
+                        <div *ngIf="productForm.get('imagemArquivo').errors.required">Imagem é obrigatória</div>
                     </div>
                 </div>
             </div>

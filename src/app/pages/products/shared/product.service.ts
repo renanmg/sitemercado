@@ -30,14 +30,14 @@ export class ProductService {
     )
   }
 
-  create(product: Product): Observable<Product> {
+  create(product: any): Observable<Product> {
     return this.http.post(this.apiPath, product).pipe(
       catchError(this.handleError),
       map(this.jsonDataToProduct)
     )
   }
 
-  update(product: Product): Observable<Product> {
+  update(product: any): Observable<Product> {
     return this.http.put(this.apiPath, product).pipe(
       catchError(this.handleError),
       map(this.jsonDataToProduct)
